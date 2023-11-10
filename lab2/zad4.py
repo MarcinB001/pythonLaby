@@ -1,4 +1,4 @@
-class FibonacciIterator:
+class Fibonacci:
     def __init__(self, steps):
         self.steps = steps
         self.current_step = 0
@@ -22,7 +22,7 @@ class FibonacciIterator:
 
 if __name__ == '__main__':
 
-    fibonacci_iter = FibonacciIterator(10)
+    fibonacci = Fibonacci(12)
 
-    for i in fibonacci_iter:
+    for i in fibonacci:
         print(i)

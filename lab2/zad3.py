@@ -6,23 +6,25 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
-    n = random.sample(range(0, 10000000), 10000000)  # tabblica 10 000 000 liczb
-    # print(n)
-
+    sizes = [1000, 10000, 100000, 1000000]
     x = [1, 2, 4, 8]
 
-    times = []
-    for i in x:
-        start = datetime.datetime.now()
-        parallel_sort(n, i)
-        times.append(datetime.datetime.now() - start)
+    for size in sizes:
+        n = random.sample(range(0, 10000000), size)
 
-    for i in range(len(x)):
-        print("Czas przy " + x[i].__str__() + " procesach: " + times[i].__str__())
+        times = []
+        for i in x:
+            start = datetime.datetime.now()
+            parallel_sort(n, i)
+            times.append(datetime.datetime.now() - start)
 
-    plt.plot(x, [time.total_seconds() for time in times], marker='o')
+        for i in range(len(x)):
+            print(f"Czas dla {size} elementów przy {x[i]} procesach: {times[i]}")
+
+        plt.plot(x, [time.total_seconds() for time in times], marker='o', label=f"{size} elementów")
+
     plt.title('Czas sortowania w zależności od liczby procesów')
     plt.xlabel('Liczba procesów')
     plt.ylabel('Czas')
-
+    plt.legend(title='Rozmiar tablicy')
     plt.show()
