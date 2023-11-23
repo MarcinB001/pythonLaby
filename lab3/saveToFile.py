@@ -5,9 +5,12 @@ import os
 from datasets import load_dataset
 
 
-def save_result(file_path, format='pickle'):
+def save_result(format='pickle'):
     def decorator(func):
         def wrapper(*args, **kwargs):
+
+            file_path = f"{args[-1]}.pkl"
+
             if os.path.exists(file_path):
                 with open(file_path, 'rb') as file:
                     if format == 'pickle':
@@ -18,6 +21,7 @@ def save_result(file_path, format='pickle'):
                         raise ValueError(f"Niewspierany format: {format}")
                 print(f"Wynik wczytany z pliku: {file_path}")
             else:
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 result = func(*args, **kwargs)
                 with open(file_path, 'wb') as file:
                     if format == 'pickle':
@@ -34,7 +38,7 @@ def save_result(file_path, format='pickle'):
     return decorator
 
 
-@save_result("dataset_cache.pkl", format='pickle')
+@save_result(format='pickle')
 def load_and_process_dataset(dataset_path):
     dataset = load_dataset(dataset_path)
     df = pd.DataFrame(dataset['train'])
@@ -43,4 +47,6 @@ def load_and_process_dataset(dataset_path):
 
 if __name__ == '__main__':
     df = load_and_process_dataset("imodels/credit-card")
-    print(df)
+    df = load_and_process_dataset("imodels/credit-card")
+    df = load_and_process_dataset("imodels/compas-recidivism")
+    # print(df)
